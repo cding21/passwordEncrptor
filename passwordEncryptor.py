@@ -1,25 +1,39 @@
-masterpw = input("Master password: ")
+from cryptography.fernet import Fernet
+
+
+# def writekey():
+#     key = Fernet.generate_key()
+#     with open("key.key","wb") as key_file:
+#         key_file.write(key)
+#
+# writekey()
+
+def load_key():
+    file = open("passwordEncryptor/key.key", "rb")
+    key_tmp = file.read()
+    file.close()
+    return key_tmp
+
+
+key = load_key()
+fer = Fernet(key)
+
 
 def view():
-    with open("passwords.txt", "r") as f:
+    with open("passwordEncryptor/passwords.txt", "r") as f:
         for line in f.readlines():
             data = line.rstrip()
-            acct, userTmp, pwTmp = data.split("|")
-            print("Account: " + acct + "| Username :" + userTmp + "| Password: " + pwTmp)
+            acct, user_tmp, pw_tmp = data.split("|")
+            print("Account: " + acct + "| Username :" + user_tmp + "| Password: " + fer.decrypt(pw_tmp.encode()).decode())
+
 
 def add():
     acct = input("Associated account: ")
     name = input("New username: ")
     pw = input("New password: ")
 
-    with open("passwords.txt","a") as f:
-        f.write(acct + "|" + name + "|" + pw + "\n")
-
-def encrypt(str):
-    pass
-
-def decrypt(str):
-    pass
+    with open("passwordEncryptor/passwords.txt", "a") as f:
+        f.write(acct + "|" + name + "|" + fer.encrypt(pw.encode()).decode() + "\n")
 
 
 while True:
