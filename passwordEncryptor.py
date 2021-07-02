@@ -20,12 +20,13 @@ fer = Fernet(key)
 
 
 def view():
+    print("Account "+ "| Username " + " | Password ")
     with open("passwordEncryptor/passwords.txt", "r") as f:
         for line in f.readlines():
             data = line.rstrip()
             acct, user_tmp, pw_tmp = data.split("|")
-            print("Account: " + acct + "| Username :" + user_tmp + "| Password: " + fer.decrypt(pw_tmp.encode()).decode())
-    input("Press enter to continue...")
+            print(acct + " | " + user_tmp + " | " + fer.decrypt(pw_tmp.encode()).decode())
+    input("\n" + "Press enter to continue...")
 
 
 def add():
