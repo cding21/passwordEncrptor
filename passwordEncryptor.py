@@ -25,6 +25,7 @@ def view():
             data = line.rstrip()
             acct, user_tmp, pw_tmp = data.split("|")
             print("Account: " + acct + "| Username :" + user_tmp + "| Password: " + fer.decrypt(pw_tmp.encode()).decode())
+    input("Press enter to continue...")
 
 
 def add():
@@ -42,6 +43,7 @@ while True:
         break
     if mode == "1":
         view()
+
     elif mode == "2":
         add()
     else:
