@@ -46,23 +46,27 @@ def add():
         f.write(acct + "|" + name + "|" + fer.encrypt(pw.encode()).decode() + "\n")
 
 
-# def writemaster():
-#     master = input("Please input master password: ")
-#     tmp = input("Please input master password again: ")
-#     if master == tmp:
-#         with open("passwordEncryptor/passwords.txt", "a") as f:
-#             f.write(fer.encrypt(master.encode()).decode() + "\n")
-#
-# writemaster()
+def writemaster():
+    master = input("Please input master password: ")
+    tmp = input("Please input master password again: ")
+    if master == tmp:
+        with open("passwordEncryptor/passwords.txt", "a") as f:
+            f.write(fer.encrypt(master.encode()).decode() + "\n")
+
 
 def check_key():
-    pwcheck = input("Master password: ")
+    with open("passwordEncryptor/passwords.txt", "r") as f:
+        tmp = f.readline()
+        if tmp == "":
+            writemaster()
     with open("passwordEncryptor/passwords.txt", "r") as f:
         masterpw = fer.decrypt(f.readline().encode()).decode()
+    pwcheck = input("Master password: ")
     if pwcheck == masterpw:
         return True
     else:
         print("Incorrect password, try again!")
+        check_key()
 
 
 pw = check_key()
