@@ -39,7 +39,7 @@ def add():
 
 
 while True:
-    mode = input("Choose from the following options: \n1 : View current password\n2 : Add a new password\n")
+    mode = input("Choose from the following options: \n1 : View current passwords\n2 : Add a new password\n")
     if mode == "q":
         break
     if mode == "1":
