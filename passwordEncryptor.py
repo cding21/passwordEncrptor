@@ -21,6 +21,10 @@ key = load_key()
 fer = Fernet(key)
 
 
+def header_centre(word, number):
+    return "-" * math.ceil((number - len(word) + 4) / 2) + word + "-" * math.ceil((number - len(word) + 4) / 2)
+
+
 def centre(word, number):
     return " " * math.ceil((number - len(word) + 4) / 2) + word + " " * math.ceil((number - len(word) + 4) / 2)
 
@@ -46,7 +50,8 @@ def view():
             if len(fer.decrypt(pw_tmp.encode()).decode()) > len(maxPw):
                 maxPw = fer.decrypt(pw_tmp.encode()).decode()
 
-    print(centre("Account", len(maxAcc)) + "|" + centre("Username", len(maxUser)) + "|" + centre("Password", len(maxPw)))
+    print(header_centre("Account", len(maxAcc)) + "|" + header_centre("Username", len(maxUser)) + "|" + header_centre(
+        "Password", len(maxPw)))
 
     counter = 1
     with open("passwordEncryptor/passwords.txt", "r") as f:
@@ -59,7 +64,7 @@ def view():
             data = line.rstrip()
             acct, user_tmp, pw_tmp = data.split("|")
 
-            print(centre(acct, len(maxAcc)) + " | " + centre(user_tmp, len(maxUser)) + " | "
+            print(centre(acct, len(maxAcc)) + "|" + centre(user_tmp, len(maxUser)) + "|"
                   + centre(fer.decrypt(pw_tmp.encode()).decode(), len(maxPw)))
 
     input("\n" + "Press enter to continue...")
