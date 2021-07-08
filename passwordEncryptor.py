@@ -1,4 +1,5 @@
 from cryptography.fernet import Fernet
+import math
 
 
 # def writekey():
@@ -20,8 +21,14 @@ key = load_key()
 fer = Fernet(key)
 
 
+def centre(word, number):
+    return " " * math.ceil((number - len(word) + 4) / 2) + word + " " * math.ceil((number - len(word) + 4) / 2)
+
+
 def view():
-    print("Account " + "| Username " + " | Password ")
+    maxAcc = ""
+    maxUser = ""
+    maxPw = ""
     counter = 1
     with open("passwordEncryptor/passwords.txt", "r") as f:
         for line in f.readlines():
@@ -32,8 +39,29 @@ def view():
                 break
             data = line.rstrip()
             acct, user_tmp, pw_tmp = data.split("|")
-            print(acct + " | " + user_tmp + " | " + fer.decrypt(pw_tmp.encode()).decode())
-            counter += 1
+            if len(acct) > len(maxAcc):
+                maxAcc = acct
+            if len(user_tmp) > len(maxUser):
+                maxUser = user_tmp
+            if len(fer.decrypt(pw_tmp.encode()).decode()) > len(maxPw):
+                maxPw = fer.decrypt(pw_tmp.encode()).decode()
+
+    print(centre("Account", len(maxAcc)) + "|" + centre("Username", len(maxUser)) + "|" + centre("Password", len(maxPw)))
+
+    counter = 1
+    with open("passwordEncryptor/passwords.txt", "r") as f:
+        for line in f.readlines():
+            if counter == 1:
+                counter += 1
+                continue
+            elif line == "":
+                break
+            data = line.rstrip()
+            acct, user_tmp, pw_tmp = data.split("|")
+
+            print(centre(acct, len(maxAcc)) + " | " + centre(user_tmp, len(maxUser)) + " | "
+                  + centre(fer.decrypt(pw_tmp.encode()).decode(), len(maxPw)))
+
     input("\n" + "Press enter to continue...")
 
 
